@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Recuperar contraseña</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script th:src="@{/script/script.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>   
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body>
+
+    
+    	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<div class="container">
+			<a class="navbar-brand mx-auto" href="#">BANCO ALTAIR</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+				data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+					 <li class="nav-item me-3">
+                        <a class="nav-link fw-bold text-white" th:href="@{/auth/iniciar-sesion}" th:if="${not #authorization.expression('
+                        isAuthenticated()')}">Iniciar sesión</a>
+                    </li>  
+				</ul>
+			</div>
+		</div>
+	</nav>
+    
+   <div class="container py-4">
+    <div class="card">
+        <form class="card-body" th:action="@{/auth/recuperar}" th:object="${usuarioDTO}" method="post">
+            <h2 class="text-center mb-4">Restablezca su contraseña</h2>
+            <input type="hidden" th:field="*{token}" />
+            <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" th:field="*{password}" class="form-control" oninput="revisarContraseña()" id="password" placeholder="Introduzca su nueva contraseña" required autofocus/>
+            </div>
+            <div class="mb-3">
+                <label for="confirmarPassword" class="form-label">Confirmar contraseña</label>
+                <input type="password" th:field="*{password2}" class="form-control" oninput="revisarContraseña()" id="confirmarPassword" placeholder="Introduzca de nuevo la contraseña" required />
+            </div>
+            <div class="text-center mb-3">
+                <div class="mensajeContrasenya" id="mensajeContrasenya"></div>
+            </div>
+            <div class="text-center">
+                <button type="submit" id="btnRegistro" class="btn btn-primary">Restablecer</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+  
+</body>
+</html>

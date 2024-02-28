@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Cuenta usuario</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@700&display=swap" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+	<script th:src="@{/script/script.js}"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+		crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+
+
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<div class="container">
+			<a class="navbar-brand mx-auto text-white" href="#">BANCO ALTAIR</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+				data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+					<li class="nav-item me-3" sec:authorize="hasRole('ROLE_ADMIN')">
+						<a class="nav-link fw-bold text-white" th:href="@{/privada/administracion-usuarios}">Administrar
+							usuarios</a>
+					<li class="nav-item me-3">
+						<form th:action="@{/auth/cerrar-sesion}" method="post" id="logoutForm">
+							<button type="button" class="btn buttonPrincipal text-white"
+								onclick="confirmarLogout()">Cerrar
+								sesión</button>
+						</form>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+
+	<div class="container py-4">
+		<div class="row">
+			<div class="col">
+				<h3 class="text-center mt-5">CUENTA CORRIENTE</h3>
+				<hr class="border border-primary border-2 opacity-55 mb-5 mt-4">
+				<div class="card">
+					<h5 class="card-header">Bienvenido <span sec:authentication="principal.username"></span></h5>
+					<div class="card-body">
+						<div class="text-center">
+							<img th:src="'data:image/jpeg;base64,' + ${usuarioDTO.foto}"
+								class="rounded-circle img-fluid mx-auto" alt="Imagen de usuario"
+								style="max-width: 100px; max-height: 100px;">
+						</div>
+						<h6 class="card-title text-center mt-3">Datos del usuario</h6>
+						<p class="card-text"><strong>Nombre:</strong> <span th:text="${usuarioDTO.nombre}"></span></p>
+						<p class="card-text"><strong>Apellido:</strong> <span th:text="${usuarioDTO.apellidos}"></span>
+						</p>
+						<!-- Agrega más campos de datos del usuario según sea necesario -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<script th:if="${not #strings.isEmpty(noAdmin)}">
+		mostrarNotificacion("¡Recurso prohibido!", "No tiene los permisos suficientes para acceder a este recurso", 'error');
+	</script>
+	<script th:if="${not #strings.isEmpty(noSePuedeEliminar)}">
+		mostrarNotificacion("¡Error!", "No se puede eliminar a un usuario con permisos de administrador", 'error');
+	</script>
+	<script th:if="${not #strings.isEmpty(Error)}">
+		mostrarNotificacion("¡Error!", "Ocurrio un error no esperado, intentelo de nuevo", 'error');
+	</script>
+</body>
+
+</html>

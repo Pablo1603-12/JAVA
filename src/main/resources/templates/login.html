@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Iniciar sesión</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@700&display=swap" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+	<script th:src="@{/script/script.js}"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+		crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<div class="container">
+			<a class="navbar-brand mx-auto" href="#">BANCO ALTAIR</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+				data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+					<li class="nav-item">
+						<a class="nav-link fw-bold text-white" th:href="@{/auth/crear-cuenta}">Crear cuenta</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	
+	<div class="container py-4"> <!-- Reduje el padding vertical -->
+		<div class="login card p-4"> <!-- Reduje el padding interno -->
+			<form class="custom-form" method="post" th:action="@{/auth/procesar-inciarsesion}" role="form">
+				<h2 class="text-center mb-4"> <!-- Reduje el margen inferior -->
+					<i class="bi bi-box-arrow-in-right"></i> Iniciar sesión
+				</h2>
+				<div class="mb-3">
+					<label for="email" class="form-label">Correo Electrónico</label>
+					<input type="email" id="login-username" name="username" class="form-control"
+						placeholder="Introduzca su correo electrónico" required autofocus />
+				</div>
+				<div class="mb-3">
+					<label for="password" class="form-label">Contraseña</label>
+					<input type="password" id="login-password" name="password" class="form-control"
+						placeholder="Introduzca su contraseña" required />
+				</div>
+				<button type="submit" class="btn btn-primary mt-3 mb-3"> <!-- Reduje el margen superior e inferior -->
+					<i class="bi bi-box-arrow-in-right fs-5"></i> Iniciar sesión
+				</button>
+				<hr class="border border-primary border-2 opacity-80 my-4">
+				<!-- Reduje el margen superior e inferior -->
+				<ul class="listaLogin list-unstyled">
+					<li><a th:href="@{/auth/solicitar-recuperacion}" class="link-secondary">Recuperar contraseña</a>
+					</li>
+					<li><a th:href="@{/auth/crear-cuenta}" class="link-secondary">Registrarse</a></li>
+				</ul>
+			</form>
+		</div>
+	</div>
+
+
+
+	<script th:if="${not #strings.isEmpty(mensajeRegistroExitoso)}">
+		mostrarNotificacion("¡Email de confirmación enviado!", "Revise su bandeja de entrada y confirme su cuenta de correo electrónico.", 'info');
+	</script>
+	<script th:if="${param.error}">
+		mostrarNotificacion("¡No se pudo iniciar sesión!", "Correo electrónico o contraseña incorrecta", 'error');
+	</script>
+	<script th:if="${not #strings.isEmpty(mensajeExitoMail)}">
+		mostrarNotificacion("¡Email de recuperación enviado!", "Revise su bandeja de entrada y sigua las instrucciones para restablecer su contraseña", 'info');
+	</script>
+	<script th:if="${not #strings.isEmpty(contraseñaModificadaExito)}">
+		mostrarNotificacion("¡Contraseña modificada con exito!", "Ya puede iniciar sesión con su nueva contraseña", 'success');
+	</script>
+	<script th:if="${not #strings.isEmpty(cuentaVerificada)}">
+		mostrarNotificacion("¡Cuenta verificada!", "La cuenta ha sido confirmada correctamente. Ya puede iniciar sesión", 'success');
+	</script>
+	<script th:if="${not #strings.isEmpty(cuentaNoVerificada)}">
+		mostrarNotificacion("¡Debe confirmar su correo electrónico!", "Para poder iniciar sesión, antes debe confirmar su cuenta de correo electrónico.", 'error');
+	</script>
+	<script th:if="${not #strings.isEmpty(error)}">
+		mostrarNotificacion("¡Error!", "Ocurrio un error no esperado, intentelo de nuevo", 'error');
+	</script>
+</body>
+
+</html>
